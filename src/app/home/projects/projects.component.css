@@ -1,0 +1,37 @@
+ .margin-bottom-3 {
+  margin-bottom: 3% !important;
+  margin-top: 3% !important;
+}
+
+ .margin-bottom-2 {
+  margin-bottom: 2% !important;
+}
+
+ mat-divider.dotted-line {
+  border-top: 1px dotted #000;
+}
+
+ button {
+  margin-bottom: 2% !important;
+  margin-right: 2% !important;
+}
+
+ mat-card {
+  background-color: whitesmoke;
+  margin-bottom: 1%;
+}
+
+.content-padding {
+  padding: 0% 25% 0% 24%;
+}
+
+ .priority-padding {
+  padding: 53% 0% 53% 0% !important;
+}
+
+ .margin-top-20 {
+  margin-top: 20% !important;
+}
+ .margin-top-3 {
+  margin-top: 3% !important;
+}

@@ -1,0 +1,18 @@
+<div fxFlex fxLayout="column">
+  <div fxLayout="row">
+    <mat-toolbar class="mat-toolbar-color">
+
+      <a routerLink="projects" (click)="linkName = 'projects'" [ngClass]="{'link-color':linkName === 'projects'}"> Add
+        Project</a>&nbsp;&nbsp;&nbsp;
+      <a routerLink="task" (click)="linkName = 'task'" [ngClass]="{'link-color':linkName === 'task'}">Add Task</a>&nbsp;&nbsp;&nbsp;
+      <a routerLink="users" (click)="linkName = 'users'" [ngClass]="{'link-color':linkName === 'users'}"> Add User</a>&nbsp;&nbsp;&nbsp;
+      <a routerLink="view-task" (click)="linkName = 'view_task'" [ngClass]="{'link-color':linkName === 'view_task'}">View
+        Task</a>
+
+    </mat-toolbar>
+  </div>
+  <div>
+    <router-outlet></router-outlet>
+  </div>
+
+</div>

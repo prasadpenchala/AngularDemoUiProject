@@ -1,0 +1,129 @@
+<div fxFlex class="container" fxLayout="column">
+  <div fxFlex="row" fxLayout="column">
+    <div fxFlex="50">
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <form #projectForm="ngForm" fxFlex="50">
+          <div fxLayout="row" fxLayoutAlign="space-between" class="margin-bottom-3">
+            <div fxFlex="14"><b>Project *</b></div>
+            <div fxFlex="4"> <b> : </b></div>
+            <input type="text" required placeholder="Enter project name" class="form-control" #Project="ngModel" name="project"
+              [(ngModel)]="item.project">
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="margin-bottom-3">
+            <div fxFlex="14"><b></b></div>
+            <div fxFlex="4"> <b> </b></div>
+            <mat-checkbox fxFlex="30" (click)="setStartDateEndDate(checked)" [(ngModel)]="checked" name="setStartDate">Set
+              Start and End date</mat-checkbox>
+            <mat-form-field fxFlex="26">
+              <input matInput [matDatepicker]="startDate" (dateChange)="startDateChange()" #StartDate="ngModel" [min]="startDateDefaultMin"
+                name="startDate" [(ngModel)]="item.startDate" placeholder="Start date" [disabled]="!checked">
+              <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+              <mat-datepicker #startDate></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field fxFlex="26">
+              <input matInput [matDatepicker]="endDate" #EndDate="ngModel" [min]="endDateDefaultMin" name="endDate"
+                [(ngModel)]="item.endDate" placeholder="End date" [disabled]="!checked">
+              <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+              <mat-datepicker #endDate></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="margin-bottom-3">
+            <div fxFlex="14"><b>Priority</b></div>
+            <div fxFlex="4"> <b> : </b></div>
+            <mat-slider fxFlex="100" #Priority1="ngModel" name="priority" class="example-margin" max="30" min="1" step="1"
+              thumbLabel="true" tickInterval="1" [(ngModel)]="item.priority">
+            </mat-slider>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="margin-bottom-3">
+            <div fxFlex="14"><b>Manager</b></div>
+            <div fxFlex="4"> <b> : </b></div>
+            <mat-form-field fxFlex="100">
+              <mat-select placeholder="Select manager" #Project1="ngModel" name="manager" [(ngModel)]="item.manager"
+                [disabled]="item.projectId">
+                <mat-option *ngFor="let user of usersList" [value]="user">
+                  {{user.firstName}} {{user.lastName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="end">
+            <button [disabled]="!projectForm.valid || runningProjectOperation" mat-raised-button color="primary">
+              <span *ngIf="!item.projectId" (click)="addProject()">Add</span>
+              <span *ngIf="item.projectId" (click)="updateProject()">Update</span>
+            </button>
+            <button mat-raised-button color="accent" (click)="reset(projectForm)">Reset</button>
+          </div>
+        </form>
+      </div>
+      <mat-divider class="margin-bottom-2 content-padding"></mat-divider>
+      <div class="content-padding">
+        <div fxLayout="column" fxLayoutAlign="space-between">
+          <input fxFlex="100" placeholder="Search by project..." type="text" class="form-control col-lg-2" #FirstName1="ngModel"
+            [(ngModel)]="search.value" (ngModelChange)="searchProjectListByProject(search.value)">
+          <div fxFlex="100" class="margin-top-3" fxLayout="row" fxLayoutAlign="space-between center">
+            <div><b>Sort By :</b></div>
+            <mat-button-toggle-group #group="matButtonToggleGroup" (click)="sortProjectListByKey(group.value)">
+              <mat-button-toggle value="startDate">
+                Start Date
+              </mat-button-toggle>
+              <mat-button-toggle value="endDate">
+                End Date
+              </mat-button-toggle>
+              <mat-button-toggle value="priority">
+                Priority
+              </mat-button-toggle>
+              <mat-button-toggle value="completed">
+                Completed
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </div>
+        <mat-divider class="margin-bottom-3 dotted-line"></mat-divider>
+        <div *ngIf="!usersListLoading">
+          <div *ngFor="let project of projectsList">
+            <div fxLayout="row" fxLayoutAlign="space-between space-between">
+              <div fxFlex="78" fxLayout="column">
+                <mat-card fxLayout="column">
+                  <div fxLayout="row">
+                    <div fxFlex="20"><b>Project</b></div>
+                    <div fxFlex="2"><b> : </b></div>
+                    <div> {{project.project}} </div>
+                  </div>
+                  <div fxLayout="row">
+                    <div fxFlex="20"><b>No of Tasks</b></div>
+                    <div fxFlex="2"><b> : </b></div>
+                    <div fxFlex="30"> {{project.tasks?project.tasks.length : 0}} </div>
+
+                    <div fxFlex="18"><b>Completed</b></div>
+                    <div fxFlex="2"><b> : </b></div>
+                    <div> {{(project.status && project.status === 'complited')?true:false}} </div>
+                  </div>
+                  <div fxLayout="row">
+                    <div fxFlex="20"><b>Start Date</b></div>
+                    <div fxFlex="2"><b> : </b></div>
+                    <div fxFlex="30"> {{project.startDate | date:'MMMM dd,yyyy'}} </div>
+
+                    <div fxFlex="18"><b>End Date</b></div>
+                    <div fxFlex="2"><b> : </b></div>
+                    <div> {{project.endDate | date :'MMMM dd ,yyyy'}} </div>
+                  </div>
+                </mat-card>
+              </div>
+              <div fxLayout="column">
+                <div><b>Priority</b></div>
+                <mat-card fxLayoutAlign="center" class="priority-padding">
+                  {{project.priority}}
+                </mat-card>
+              </div>
+              <div fxLayout="column">
+                <button mat-raised-button color="primary" (click)="setUpdate(project)">Edit</button>
+                <button class="margin-top-20" mat-raised-button color="warn" (click)="deleteProject(project)">Delete</button>
+              </div>
+            </div>
+            <mat-divider class="margin-bottom-3 dotted-line"></mat-divider>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

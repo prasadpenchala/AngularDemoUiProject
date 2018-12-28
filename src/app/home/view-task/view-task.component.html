@@ -1,0 +1,74 @@
+<div fxFlex class="container" fxLayout="column">
+  <div fxFlex="row" fxLayout="column">
+    <div fxFlex="50">
+      <div class="content-padding">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <input fxFlex="50" placeholder="Search by project..." type="text" class="form-control col-lg-2" #FirstName1="ngModel"
+            [(ngModel)]="search.value" (ngModelChange)="searchTaskListByTask(search.value)">
+          <div><b>Sort Task By :</b></div>
+          <mat-button-toggle-group #group="matButtonToggleGroup" (click)="sortTasksListByKey(group.value)">
+            <mat-button-toggle value="startDate">
+              Start Date
+            </mat-button-toggle>
+            <mat-button-toggle value="endDate">
+              End Date
+            </mat-button-toggle>
+            <mat-button-toggle value="priority">
+              Priority
+            </mat-button-toggle>
+            <mat-button-toggle value="completed">
+              Completed
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+        <mat-divider class="margin-bottom-3 dotted-line"></mat-divider>
+        <div *ngIf="!taskListLoading">
+          <div *ngFor="let task of tasksList">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="row" style="    width: 57%;">
+                <div fxLayout="column" fxLayoutAlign="center">
+                  <div><b>Task</b></div>
+                  <mat-card style="background: whitesmoke;min-width: 285px; max-width: 500px;" fxLayoutAlign="center center"
+                    >
+                    <div>{{task.task}}</div>
+                  </mat-card>
+                </div>
+                <div fxLayout="column" style="position: absolute;left: 33%;">
+                  <div><b>Parent</b></div>
+                  <mat-card style="background: whitesmoke;min-width: 295px; max-width: 500px;" fxLayoutAlign="center center"
+                    >
+                    <div> {{task.parentId?task.parentId.parentTask:'This task has no
+                      parent'}}</div>
+                  </mat-card>
+                </div>
+              </div>
+              <div fxLayout="column" fxFlex="9">
+                <div><b>Priority</b></div>
+                <mat-card fxLayoutAlign="center center">
+                  {{task.priority}}
+                </mat-card>
+              </div>
+              <div fxLayout="column" fxFlex="9">
+                <div><b>Start</b></div>
+                <mat-card fxLayoutAlign="center center">
+                  {{task.startDate?(task.startDate | date:'MM/dd/yyyy'):' --- '}}
+                </mat-card>
+              </div>
+              <div fxLayout="column" fxFlex="9">
+                <div><b>End</b></div>
+                <mat-card fxLayoutAlign="center center">
+                  {{task.endDate?(task.endDate | date:'MM/dd/yyyy'):' --- '}}
+                </mat-card>
+              </div>
+              <div fxLayout="row">
+                <button mat-raised-button (click)="redirectToTaskEdit(task)" color="primary">Edit</button>
+                <button mat-raised-button color="warn" (click)="deleteTask(task)">Delete</button>
+              </div>
+            </div>
+            <mat-divider class="margin-bottom-3 dotted-line"></mat-divider>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

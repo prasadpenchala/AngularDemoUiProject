@@ -1,0 +1,94 @@
+<div fxFlex class="container" fxLayout="column">
+  <div fxFlex="row" fxLayout="column">
+    <div fxFlex="50">
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <form #userForm="ngForm" fxFlex="50">
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="margin-bottom-3">
+            <div fxFlex="14"><b>First Name *</b></div>
+            <div fxFlex="4"> <b> : </b></div>
+            <input type="text" placeholder="Enter first name" class="form-control" required #FirstName1="ngModel" name="firstName" [(ngModel)]="item.firstName">
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="margin-bottom-3">
+            <div fxFlex="14"><b>Last Name *</b></div>
+            <div fxFlex="4"> <b> : </b></div>
+            <input type="text"  placeholder="Enter last name" class="form-control" required #LastName1="ngModel" name="lastName" [(ngModel)]="item.lastName">
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="margin-bottom-3">
+            <div fxFlex="14"><b>Employee Id *</b></div>
+            <div fxFlex="4"> <b> : </b></div>
+            <input type="number"  placeholder="Enter employee number" class="form-control" required #EmployeeId1="ngModel" name="employeeId" [(ngModel)]="item.employeeId">
+          </div>
+          <div fxLayout="row" fxLayoutAlign="end" class="margin-bottom-2">
+            <button class="margin-right-2 " [disabled]="!userForm.valid || runningUserOperation" mat-raised-button color="primary">
+              <span *ngIf="!item.userId" (click)="addUser()">Add</span>
+              <span *ngIf="item.userId" (click)="updateUser()">Update</span>
+            </button>
+            <button mat-raised-button color="accent" (click)="reset(userForm)">Reset</button>
+          </div>
+        </form>
+      </div>
+      <mat-divider class="margin-bottom-2 content-padding"></mat-divider>
+      <div class="content-padding">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <input fxFlex="40" placeholder="Search by user..." type="text" class="form-control col-lg-2" #FirstName1="ngModel" [(ngModel)]="search.value"
+            (ngModelChange)="searchUserListByFirstName(search.value)">
+          <div fxFlex="39">
+            Sort :
+            <mat-button-toggle-group #group="matButtonToggleGroup" (click)="sortUserListByKey(group.value)">
+              <mat-button-toggle value="firstName">
+                First name
+              </mat-button-toggle>
+              <mat-button-toggle value="lastName">
+                Last name
+              </mat-button-toggle>
+              <mat-button-toggle value="employeeId">
+                Id
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </div>
+        <mat-divider class="margin-bottom-3 dotted-line"></mat-divider>
+        <div *ngIf="!usersListLoading">
+          <div *ngFor="let user of usersList">
+            <div fxLayout="row" fxLayoutAlign="space-between space-between">
+              <div fxFlex="87" fxLayout="column">
+                <mat-card fxLayout="row">
+                  <div fxFlex="16">
+                    <b>First Name</b>
+                  </div>
+                  <div fxFlex="2">
+                    <b> : </b>
+                  </div>
+                  <div>{{user.firstName}}</div>
+                </mat-card>
+                <mat-card fxLayout="row">
+                  <div fxFlex="16">
+                    <b>Last Name</b>
+                  </div>
+                  <div fxFlex="2">
+                    <b> : </b>
+                  </div>
+                  <div>{{user.lastName}}</div>
+                </mat-card>
+                <mat-card fxLayout="row">
+                  <div fxFlex="16">
+                    <b>Employee Id</b>
+                  </div>
+                  <div fxFlex="2">
+                    <b> : </b>
+                  </div>
+                  <div>{{user.employeeId}}</div>
+                </mat-card>
+              </div>
+              <div fxLayout="column">
+                <button mat-raised-button color="primary" (click)="setUpdate(user)">Edit</button>
+                <button class="margin-top-20" mat-raised-button color="warn" (click)="deleteUser(user)">Delete</button>
+              </div>
+            </div>
+            <mat-divider class="margin-bottom-3 dotted-line"></mat-divider>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

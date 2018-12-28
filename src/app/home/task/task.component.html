@@ -1,0 +1,90 @@
+<div fxFlex class="container" fxLayout="column">
+  <div fxFlex="row" fxLayout="column" *ngIf="!addTaskLoading">
+    <div fxFlex="50">
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <form #taskForm="ngForm" fxFlex="50">
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="margin-bottom-3">
+            <div fxFlex="14"><b>Project</b></div>
+            <div fxFlex="4"> <b> : </b></div>
+            <mat-form-field fxFlex="100">
+              <mat-select [disabled]="item.task_id" placeholder="Select project" [(value)]="item.project" #Project1="ngModel"
+                name="project" [(ngModel)]="item.project">
+                <mat-option *ngFor="let project of projectsList" [value]="project.projectId">
+                  {{project.project}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="margin-bottom-3">
+            <div fxFlex="14"><b>Task *</b></div>
+            <div fxFlex="4"> <b> : </b></div>
+            <input type="text" required placeholder="Enter task name" class="form-control" #TaskName1="ngModel" name="task"
+              [(ngModel)]="item.task">
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="margin-bottom-3">
+            <div fxFlex="14"><b></b></div>
+            <div fxFlex="4"> <b> </b></div>
+            <mat-checkbox fxFlex="82" [disabled]="item.task_id" (click)="setDataWhileParentTask(checked)" [(ngModel)]="checked"
+              name="setDataWhileParentTask">Parent
+              Task</mat-checkbox>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="margin-bottom-3">
+            <div fxFlex="14"><b>Priority</b></div>
+            <div fxFlex="4"> <b> : </b></div>
+            <mat-slider [disabled]="checked" fxFlex="100" #Priority1="ngModel" name="priority" class="example-margin"
+              max="30" min="1" step="1" thumbLabel="true" tickInterval="1" [(ngModel)]="item.priority">
+            </mat-slider>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="margin-bottom-3">
+            <div fxFlex="14"><b>Parent Task</b></div>
+            <div fxFlex="4"> <b> : </b></div>
+            <mat-form-field fxFlex="100">
+              <mat-select [disabled]="checked || item.task_id" placeholder="Select parent task" #parentTask1="ngModel"
+                name="parentId" [(ngModel)]="item.parentId">
+                <mat-option *ngFor="let parentTask of parentTaskList" [value]="parentTask.parentId">
+                  {{parentTask.parentTask}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="margin-bottom-3">
+            <div fxFlex="12"><b>Start Date</b></div>
+            <div fxFlex="4"> <b> : </b></div>
+            <mat-form-field fxFlex="30">
+              <input matInput [matDatepicker]="startDate" (dateChange)="startDateChange()" #StartDate="ngModel" [min]="startDateDefaultMin"
+                name="startDate" [(ngModel)]="item.startDate" placeholder="Start date" [disabled]="checked">
+              <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+              <mat-datepicker #startDate></mat-datepicker>
+            </mat-form-field>
+            <div fxFlex="12"><b>End Date</b></div>
+            <div fxFlex="4"> <b> : </b></div>
+            <mat-form-field fxFlex="30">
+              <input matInput [matDatepicker]="endDate" #EndDate="ngModel" [min]="endDateDefaultMin" name="endDate"
+                [(ngModel)]="item.endDate" placeholder="End date" [disabled]="checked">
+              <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+              <mat-datepicker #endDate></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="margin-bottom-3">
+            <div fxFlex="14"><b>User</b></div>
+            <div fxFlex="4"> <b> : </b></div>
+            <mat-form-field fxFlex="100">
+              <mat-select [disabled]="item.task_id" placeholder="Select user" #Project1="ngModel" name="user"
+                [(ngModel)]="user">
+                <mat-option *ngFor="let user of usersList" [value]="user.userId">
+                  {{user.firstName}} {{user.lastName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="end">
+            <button [disabled]="!taskForm.valid || runningTaskOperation" mat-raised-button color="primary">
+              <span *ngIf="!item.task_id" (click)="addTask()">Add</span>
+              <span *ngIf="item.task_id" (click)="updateTask()">Update</span>
+            </button>
+            <button mat-raised-button color="accent" (click)="reset(taskForm)">Reset</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
